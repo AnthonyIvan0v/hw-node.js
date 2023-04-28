@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const { handleMongooseError } = require("../utils");
+const { User } = require("./user");
 
 const contactSchema = new Schema(
     {
@@ -37,18 +38,22 @@ const addSchema = Joi.object({
         "any.reqired": `"missing required phone field`,
     }),
     favorite: Joi.boolean(),
+    owner: {
+        type: Schema.Types.ObjectId,
+        refs: "user",
+    },
 });
 
 const updateFavoriteSchema = Joi.object({
     favorite: Joi.boolean().required(),
 });
 
-const schema = {
+const schemas = {
     addSchema,
     updateFavoriteSchema,
 };
 
 module.exports = {
     Contact,
-    schema,
+    schemas,
 };
